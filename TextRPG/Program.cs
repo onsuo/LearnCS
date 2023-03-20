@@ -1,45 +1,6 @@
-﻿namespace TextRPG;
+﻿using TextRPG.Entity;
 
-internal class Player
-{
-    private int _at = 10;
-    private int _hp = 50;
-    private int _maxHp = 100;
-    
-    public void PrintStatus()
-    {
-        Console.WriteLine("------------------------------------");
-        Console.WriteLine($"공격력: {_at}");
-        Console.WriteLine($"쳬력: {_hp}/{_maxHp}");
-        Console.WriteLine("------------------------------------");
-    }
-
-    private void PrintHp()
-    {
-        Console.Write("현재 플레이어의 HP는 ");
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write(_hp);
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine(" 입니다.");
-    }
-    
-    public void MaxHeal()
-    {
-        if (_hp >= _maxHp)
-        {
-            Utility.PromptMessage("이미 체력이 가득 찼습니다.");
-            return;
-        }
-        _hp = _maxHp;
-        PrintHp();
-        Console.ReadKey(true);
-    }
-}
-
-internal class Monster
-{
-    
-}
+namespace TextRPG;
 
 internal enum StartSelection
 {
@@ -89,7 +50,7 @@ internal static class Program
             {
                 case ConsoleKey.D1:
                     Console.WriteLine("체력을 모두 회복합니다.");
-                    player.MaxHeal();
+                    player.TownHeal();
                     break;
                 case ConsoleKey.D2:
                     break;
@@ -101,8 +62,32 @@ internal static class Program
 
     private static void Battle(Player player)
     {
-        Console.Clear();
-        Utility.PromptMessage("아직 개장하지 않았습니다.");
+        Monster newMonster = new Monster();
+        
+        for (int i = 1; true; i++)
+        {
+            Console.Clear();
+            player.PrintStatus();
+            newMonster.PrintStatus();
+            Console.ReadKey(true);
+            Utility.PromptMessage($"{i}번째 턴");
+            Utility.PromptMessage($"{player.Name}의 차례");
+            player.Damage(newMonster);
+            if (newMonster.CheckDead())
+            {
+                player.Kill(newMonster);
+                Utility.PromptMessage("전투에서 승리하였습니다.\n처음으로 돌아갑니다.");
+                break;
+            }
+            Utility.PromptMessage($"{newMonster.Name}의 차례");
+            newMonster.Damage(player);
+            if (player.CheckDead())
+            {
+                newMonster.Kill(player);
+                Utility.PromptMessage("전투에서 패배하였습니다.");
+                break;
+            }
+        }
     }
     
     private static void Main()
