@@ -1,30 +1,82 @@
 ﻿namespace TextRPG.Entity;
 
-internal abstract class BaseEntity
+internal abstract partial class BaseEntity
 {
-    public string Name { get; protected init; }
+    public string Name { get; protected set; }
+    protected int MaxLv;
     protected int Lv;
-
-    protected int At;
-    protected int Hp;
-    protected int MaxHp;
-    
+    public int MaxHp { get; protected set; }
+    protected int m_Hp;
+    protected int MaxAt;
+    protected int m_At;
     public int KillExp { get; protected set; }
     
-    protected BaseEntity()
+    public int Hp
+    {
+        get
+        {
+            if (this.m_Hp > this.MaxHp)
+            {
+                Message.ShowError($"[Error] 체력이 최대치({this.MaxHp})를 초과하였습니다. ({this.m_Hp})");
+                return 1;
+            }
+
+            return this.m_Hp;
+        }
+        set
+        {
+            if (value > this.MaxHp)
+            {
+                Message.ShowError($"[Error] 체력은 {this.MaxHp}을(를) 초과할 수 없습니다.");
+                return;
+            }
+
+            this.m_Hp = value;
+        }
+    }
+    
+    public int At
+    {
+        get
+        {
+            if (this.m_At > this.MaxAt)
+            {
+                Message.ShowError($"[Error] 공격력이 최대치({this.MaxAt})를 초과하였습니다. ({this.m_At})");
+                return 1;
+            }
+
+            return this.m_At;
+        }
+        set
+        {
+            if (value > this.MaxAt)
+            {
+                Message.ShowError($"[Error] 공격력은 {this.MaxAt}을(를) 초과할 수 없습니다.");
+                return;
+            }
+
+            this.m_At = value;
+        }
+    }
+
+    public BaseEntity()
     {
         this.Name = "BaseEntity";
+        this.MaxLv = 1;
         this.Lv = 1;
-        this.At = 1;
-        this.Hp = 1;
         this.MaxHp = 1;
+        this.Hp = 1;
+        this.MaxAt = 1;
+        this.At = 1;
         this.KillExp = 1;
     }
 
     public virtual void PrintStatus()
     {
         Console.WriteLine("----------------------------------------------");
-        Console.WriteLine($"|{this.Name}| Lv.{this.Lv}");
+        Console.Write("|");
+        Message.ColorWrite(this.Name, ConsoleColor.Green);
+        Console.WriteLine($"| Lv.{this.Lv}");
         Console.WriteLine($"공격력: {this.At}");
         Console.WriteLine($"쳬력: {this.Hp}/{this.MaxHp}");
         Console.WriteLine("----------------------------------------------");
@@ -32,41 +84,10 @@ internal abstract class BaseEntity
     
     protected void PrintHp()
     {
-        Console.Write($"현재 {this.Name}의 HP는 ");
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write(Hp);
-        Console.ForegroundColor = ConsoleColor.White;
-        Utility.PromptMessage(" 입니다.");
-    }
-
-    public void Heal(int healed)
-    {
-        this.Hp += healed;
-        Console.WriteLine($"{this.Name}의 체력이 {healed} 만큼 회복되었습니다.");
-        this.PrintHp();
-    }
-
-    public void Damage(BaseEntity other)
-    {
-        if (other.Hp <= this.At)
-        {
-            other.Hp = 0;
-        }
-        else
-        {
-            other.Hp -= this.At;
-        }
-        Console.WriteLine($"{this.Name}이(가) {other.Name}에게 {this.At} 만큼의 피해를 주었습니다.");
-        other.PrintHp();
-    }
-
-    public bool CheckDead()
-    {
-        return this.Hp <= 0;
-    }
-
-    public virtual void Kill(BaseEntity other)
-    {
-        Console.WriteLine($"{this.Name}이(가) {other.Name}을(를) 처치했습니다.");
+        Console.Write("현재 ");
+        Message.ColorWrite(this.Name, ConsoleColor.Green);
+        Console.Write("의 HP는 ");
+        Message.ColorWrite(this.Hp, ConsoleColor.Yellow);
+        Message.Notify(" 입니다.");
     }
 }

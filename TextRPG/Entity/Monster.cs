@@ -5,10 +5,11 @@ internal class Monster : BaseEntity
     public Monster()
     {
         this.Name = "Monster";
-        this.Lv = 1;
-        this.At = 5;
-        this.Hp = 50;
+        this.MaxLv = 50;
         this.MaxHp = 50;
+        this.Hp = 50;
+        this.MaxAt = 99;
+        this.At = 5;
         this.KillExp = 10;
     }
 }

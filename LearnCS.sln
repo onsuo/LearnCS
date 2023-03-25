@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextRPG", "TextRPG\TextRPG.csproj", "{3FD9F757-5C64-4EA5-9CCE-4010563F6E7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris", "Tetris\Tetris.csproj", "{039807C3-9F7B-4877-A085-DC22B0A18054}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{D0F39C74-3E6F-4BA0-95A9-52343FFA311B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{3FD9F757-5C64-4EA5-9CCE-4010563F6E7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FD9F757-5C64-4EA5-9CCE-4010563F6E7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FD9F757-5C64-4EA5-9CCE-4010563F6E7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{039807C3-9F7B-4877-A085-DC22B0A18054}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{039807C3-9F7B-4877-A085-DC22B0A18054}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{039807C3-9F7B-4877-A085-DC22B0A18054}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{039807C3-9F7B-4877-A085-DC22B0A18054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0F39C74-3E6F-4BA0-95A9-52343FFA311B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0F39C74-3E6F-4BA0-95A9-52343FFA311B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0F39C74-3E6F-4BA0-95A9-52343FFA311B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0F39C74-3E6F-4BA0-95A9-52343FFA311B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

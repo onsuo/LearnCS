@@ -1,27 +1,46 @@
 ﻿namespace TextRPG.Entity;
 
-internal class Player : BaseEntity
+internal partial class Player : BaseEntity
 {
-    protected int Exp;
     protected int MaxExp;
+    protected int m_Exp;
     
+    public int Exp
+    {
+        get => m_Exp;
+        
+        set
+        {
+            if (value > 999)
+            {
+                Message.ShowError($"[Error] 1회 획득 가능한 경험치를 초과했습니다.({value})");
+                return;
+            }
+
+            this.m_Exp = value;
+        }
+    }
+
     public Player()
     {
         this.Name = "Player";
-        this.Lv = 1;
-        this.At = 10;
-        this.Hp = 50;
+        this.MaxLv = 99;
         this.MaxHp = 100;
+        this.Hp = 50;
+        this.MaxAt = 999;
+        this.At = 10;
         this.KillExp = 10;
         
-        this.Exp = 0;
         this.MaxExp = 10;
+        this.Exp = 0;
     }
 
     public override void PrintStatus()
     {
         Console.WriteLine("----------------------------------------------");
-        Console.WriteLine($"|{this.Name}| Lv.{this.Lv}(Exp:{this.Exp}/{this.MaxExp})");
+        Console.Write("|");
+        Message.ColorWrite(this.Name, ConsoleColor.Green);
+        Console.WriteLine($"| Lv.{this.Lv}(Exp:{this.Exp}/{this.MaxExp})");
         Console.WriteLine($"공격력: {this.At}");
         Console.WriteLine($"쳬력: {this.Hp}/{this.MaxHp}");
         Console.WriteLine("----------------------------------------------");
@@ -29,8 +48,20 @@ internal class Player : BaseEntity
 
     protected void CheckLevel()
     {
+        if (this.Lv == this.MaxLv)
+        {
+            Console.WriteLine("이미 최대레벨 입니다.");
+            return;
+        }
+        
         while (true)
         {
+            if (this.Lv == this.MaxLv)
+            {
+                this.MaxExp = -1;
+                this.Exp = this.MaxExp;
+                return;
+            }
             if (this.Exp < this.MaxExp)
             {
                 break;
@@ -40,25 +71,6 @@ internal class Player : BaseEntity
             this.MaxExp++;
             this.KillExp += 2;
         }
-        Utility.PromptMessage($"Lv.{this.Lv} 이 되었습니다.");
-    }
-    
-    public override void Kill(BaseEntity other)
-    {
-        Utility.PromptMessage($"{this.Name}이(가) {other.Name}을(를) 처치했습니다.");
-        this.Exp += other.KillExp;
-        Utility.PromptMessage($"+ {other.KillExp} Exp 를 얻었습니다.");
-        this.CheckLevel();
-    }
-    
-    public void TownHeal()
-    {
-        if (Hp >= MaxHp)
-        {
-            Utility.PromptMessage("이미 체력이 가득 찼습니다.");
-            return;
-        }
-        Hp = MaxHp;
-        this.PrintHp();
+        Message.Notify($"Lv.{this.Lv} 이(가) 되었습니다.");
     }
 }
